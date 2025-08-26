@@ -2,11 +2,11 @@ from flask import Flask,render_template,request
 import pandas as pd
 import numpy as np
 import pickle
-model=pickle.load(open('D:\Breast-Cancer-Prediction\model\model.pkl','rb'))
+import os
+model = pickle.load(open(os.path.join(os.path.dirname(__file__), '..', 'model', 'model.pkl'), 'rb'))
 
 #flask app
-app=Flask(__name__,template_folder="D:\\Breast-Cancer-Prediction\\templates",static_folder="D:\\Breast-Cancer-Prediction\\static")
-
+app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 @app.route('/')
 def index():
