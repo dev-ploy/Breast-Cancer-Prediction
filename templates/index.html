@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Breast Cancer Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8f9fa 60%, #ffe6f2 100%);
+      }
+      .main-img {
+        display: block;
+        margin: 30px auto 20px auto;
+        width: 180px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      .center-card {
+        margin: 0 auto;
+        margin-top: 40px;
+        max-width: 500px;
+      }
+      .result-row {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px;
+        margin-top: 30px;
+      }
+      .result-card {
+        max-width: 350px;
+        min-width: 250px;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      }
+      .result-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .card-img-top {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 12px 12px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mt-4 mb-2">Breast Cancer Prediction</h1>
+      <img class="main-img" src="{{ url_for('static', filename='main.jpg') }}" alt="Main Image">
+      <div class="card center-card shadow-sm">
+        <div class="card-body">
+          <form action="/predict" method="POST">
+            <div class="mb-3">
+              <label for="featuresInput" class="form-label">Enter all medical cancer features (comma separated):</label>
+              <input type="text" name="feature" class="form-control" id="featuresInput" placeholder="e.g. 17.99,10.38,122.8,1001,...">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Predict</button>
+          </form>
+        </div>
+      </div>
+
+      {% if message %}
+        <div class="result-row">
+        {% for i in message %}
+          {% if i == "Cancerous" %}
+            <div class="card result-card border-danger">
+              <img class="card-img-top" src="{{ url_for('static', filename='img.jpg') }}" alt="Cancerous">
+              <div class="card-body text-center">
+                <div class="result-title text-danger">Cancerous</div>
+                <p class="card-text">The prediction indicates a cancerous result.<br> Please consult your doctor for further advice.</p>
+              </div>
+            </div>
+          {% else %}
+            <div class="card result-card border-success">
+              <img class="card-img-top" src="{{ url_for('static', filename='img1.jpg') }}" alt="Not Cancerous">
+              <div class="card-body text-center">
+                <div class="result-title text-success">Not Cancerous</div>
+                <p class="card-text">The prediction indicates no cancer detected.<br> Stay healthy and continue regular checkups.</p>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
