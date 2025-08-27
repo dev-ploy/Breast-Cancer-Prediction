@@ -17,17 +17,20 @@ def index():
 
 @app.route('/predict',methods=['POST'])
 def predict():
-    feature=request.form['feature']
-    features_list = [f.strip() for f in feature.split(',')]
-    try:
-        np_features=np.asarray(features_list,dtype=np.float32) #convert into numpy array
-        pred=model.predict(np_features.reshape(1,-1)) #prediction for 1 instance
-        return render_template("index.html", message=output)
-        output=["Cancerous"if pred[0]==1 else "Not Cancerous"]
-    except Exception as e:
-        return render_template("index.html", message=[f"Error: {str(e)}"])
+    if request.method == 'POST':
+        feature=request.form['feature']
+        features_list = [f.strip() for f in feature.split(',')]
+        try:
+            np_features=np.asarray(features_list,dtype=np.float32) #convert into numpy array
+            pred=model.predict(np_features.reshape(1,-1)) #prediction for 1 instance
+            return render_template("index.html", message=output)
+            output=["Cancerous"if pred[0]==1 else "Not Cancerous"]
+        except Exception as e:
+            return render_template("index.html", message=[f"Error: {str(e)}"])
     # return render_template("index.html",message=output)
-
+    else:
+        # Handle GET requests gracefully
+        return render_template("index.html", message=["Please submit features using the form."])
 
 
 #Python main
