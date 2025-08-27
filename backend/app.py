@@ -6,8 +6,11 @@ import os
 model = pickle.load(open(os.path.join(os.path.dirname(__file__), '..', 'model', 'model.pkl'), 'rb'))
 
 #flask app
-app = Flask(__name__, template_folder="../templates", static_folder="../static")
-
+app = Flask(
+    __name__,
+    template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'),
+    static_folder=os.path.join(os.path.dirname(__file__), '..', 'static')
+)
 @app.route('/')
 def index():
     return render_template("index.html")
